@@ -3,8 +3,11 @@
 ## Parte 1: git rebase para mantener un historial lineal
 
 2. Escenario de ejemplo
+
 	![](Attachments/Pasted%20image%2020250416004336.png)
+	
 	Luego del rebase se crea un nuevo commit, no se mantiene el hash
+	
 	![](Attachments/Pasted%20image%2020250416005023.png)
 3. Revisión
 	![](Attachments/Pasted%20image%2020250416013424.png)
