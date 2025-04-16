@@ -78,3 +78,22 @@
 
 	![](Attachments/Pasted%20image%2020250416053225.png)
 
+	Se realiza un `git rebase main` , para luego hacer una fusión fast-forward con main.
+
+	![](Attachments/Pasted%20image%2020250416061216.png)
+
+	**Preguntas**
+
+	- ¿Qué sucede con el historial de commits después del rebase?
+
+		El historial se altera, en vez de `49a2f2b` vemos `c7afcdb`
+
+		![](Attachments/Pasted%20image%2020250416061301.png)
+
+	- ¿En qué situación aplicarías una fusión fast-forward en un proyecto ágil?
+
+		Si estoy trabajando en una feature yo solo y reviso el historial de commits de main pero nadie ha realizado commits desde que me puse a trabajar, en ese caso puedo hacer realizar un `git rebase` y en main `git merge ` fast forward.
+
+2. **Cherry-pick para integración selectiva en un pipeline CI/CD**
+
+	
