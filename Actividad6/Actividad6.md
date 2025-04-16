@@ -3,24 +3,24 @@
 ## Parte 1: git rebase para mantener un historial lineal
 
 2. Escenario de ejemplo
-	![](Pasted%20image%2020250416004336.png)
+	![](Attachments/Pasted%20image%2020250416004336.png)
 	Luego del rebase se crea un nuevo commit, no se mantiene el hash
-	![](Pasted%20image%2020250416005023.png)
+	![](Attachments/Pasted%20image%2020250416005023.png)
 3. Revisión
-	![](Pasted%20image%2020250416013424.png)
+	![](Attachments/Pasted%20image%2020250416013424.png)
 4. Momento de fusionar y completar el proceso de rebase
-	![](Pasted%20image%2020250416013456.png)
+	![](Attachments/Pasted%20image%2020250416013456.png)
 ## Parte 2: git cherry-pick para la integración selectiva de commit
 
 2. Escenario de ejemplo:
-	![](Pasted%20image%2020250416022122.png)
+	![](Attachments/Pasted%20image%2020250416022122.png)
 	**Pregunta:** Muestra un diagrama de como se ven las ramas en este paso.
-	![](Pasted%20image%2020250416023907.png)
+	![](Attachments/Pasted%20image%2020250416023907.png)
 3. **Tarea**: Haz cherry-pick de un commit de add-base-documents a main:
 
-	![](Pasted%20image%2020250416024308.png)
+	![](Attachments/Pasted%20image%2020250416024308.png)
 4. Revisión:
-	![](Pasted%20image%2020250416024443.png)
+	![](Attachments/Pasted%20image%2020250416024443.png)
 ### Preguntas de discusión
 
 1. ¿Por qué se considera que rebase es más útil para mantener un historial de proyecto lineal en comparación con merge?  
@@ -50,5 +50,5 @@
 ## Ejercicios prácticos
 
 1. **Simulación de un flujo de trabajo Scrum con git rebase y git merge**
-	
+	![](Attachments/Pasted%20image%2020250416053225.png)
 
