@@ -96,4 +96,79 @@
 
 2. **Cherry-pick para integración selectiva en un pipeline CI/CD**
 
-	
+	![](Attachments/Pasted%20image%2020250417053040.png)
+
+	**Preguntas**
+
+	- ¿Cómo utilizarías cherry-pick en un pipeline de CI/CD para mover solo ciertos cambios listos a producción?
+
+		Cuando quiera llevar cambios específicos a producción sin tener que hacer un deploy completo de la rama de desarrollo
+
+	- ¿Qué ventajas ofrece cherry-pick en un flujo de trabajo de DevOps?
+
+		Facilta que los despliegues puedan ser **controlados** y **rapidos**, que es justo la idea de DevOps
+
+## **Git, Scrum y Sprints**
+
+### **Fase 1: Planificación del sprint (sprint planning)**
+
+#### **Ejercicio 1: Crear ramas de funcionalidades (feature branches)**
+
+![](Attachments/Pasted%20image%2020250417063504.png)
+
+#### **Pregunta:** ¿Por qué es importante trabajar en ramas de funcionalidades separadas durante un sprint?
+
+Porque permite que cada desarrollador trabaje por separado en una funcionalidad, sin interrumpir el trabajo de otro.
+
+### **Fase 2: Desarrollo del sprint (sprint execution)**
+
+#### **Ejercicio 2: Integración continua con git rebase**
+
+![](Attachments/Pasted%20image%2020250417080529.png)
+
+#### **Pregunta:** ¿Qué ventajas proporciona el rebase durante el desarrollo de un sprint en términos de integración continua?
+
+Se reducen conflictos ya que la rama se mantiene sincronizada con el proyecto base, se entiendo mejor la evolución del código y permite debugear con `git bisect`
+
+### **Fase 3: Revisión del sprint (sprint review)**
+
+#### **Ejercicio 3: Integración selectiva con git cherry-pick**
+
+![](Attachments/Pasted%20image%2020250417082502.png)
+
+#### **Pregunta:** ¿Cómo ayuda `git cherry-pick` a mostrar avances de forma selectiva en un sprint review?
+
+No es necesario realizar un merge, entonces pueden verse poco a poco los commits realizados en la rama de la feature para mostrar el avance.
+
+### **Fase 4: Retrospectiva del sprint (sprint retrospective)**
+
+#### **Ejercicio 4: Revisión de conflictos y resolución**
+
+![](Attachments/Pasted%20image%2020250417083349.png)
+
+Escogemos cual cambio aceptar
+
+![](Attachments/Pasted%20image%2020250417083429.png)
+
+![](Attachments/Pasted%20image%2020250417083504.png)
+![](Attachments/Pasted%20image%2020250417083823.png)
+
+#### **Pregunta**: ¿Cómo manejas los conflictos de fusión al final de un sprint? ¿Cómo puede el equipo mejorar la comunicación para evitar conflictos grandes?
+
+Los rebases frecuentes pueden ayudar a que aparezcan tantos conflictos, además de la distribución de responsabilidades para que el desarrollo de una feature sea independiente de los otros.
+
+### **Fase 5: Fase de desarrollo, automatización de integración continua (CI) con git rebase**
+
+#### **Ejercicio 5: Automatización de rebase con hooks de Git**
+
+![](Attachments/Pasted%20image%2020250417132003.png)
+
+![](Attachments/Pasted%20image%2020250417131941.png)
+
+#### **Pregunta**: ¿Qué ventajas y desventajas observas al automatizar el rebase en un entorno de CI/CD?
+
+- Ventajas: Permite ejecutar las pruebas en un entorno lo más actualizado posible.
+- Desventajas: Manejar la solución automática de conflictos
+
+## Navegando conflictos y versionando en un entorno DevOps
+
