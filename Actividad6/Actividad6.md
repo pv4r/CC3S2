@@ -172,3 +172,53 @@ Los rebases frecuentes pueden ayudar a que aparezcan tantos conflictos, además 
 
 ## Navegando conflictos y versionando en un entorno DevOps
 
+### Ejemplo:
+
+1. **Inicialización del proyecto y creación de ramas**
+
+	![](Attachments/Pasted%20image%2020250418113622.png)
+
+2. **Fusión y resolución de conflictos**
+
+	![](Attachments/Pasted%20image%2020250418115149.png)
+
+3. Simulación de fusiones y uso de git diff
+
+	![](Attachments/Pasted%20image%2020250418121217.png)
+
+4. **Uso de git mergetool**
+
+	![](Attachments/Pasted%20image%2020250418123719.png)
+	
+	![](Attachments/Pasted%20image%2020250418122442.png)
+
+	![](Attachments/Pasted%20image%2020250418123826.png)
+
+	![](Attachments/Pasted%20image%2020250418123936.png)
+
+	![](Attachments/Pasted%20image%2020250418124054.png)
+
+5. **Uso de git revert y git reset**
+
+	![](Attachments/Pasted%20image%2020250418133905.png)
+
+6. **Versionado semántico y etiquetado**
+
+	![](Attachments/Pasted%20image%2020250418134515.png)
+
+7. **Aplicación de git bisect para depuración**
+
+	![](Attachments/Pasted%20image%2020250418135528.png)
+
+	![](Attachments/Pasted%20image%2020250418140306.png)
+
+8. **Documentación y reflexión**
+
+	- `git checkout --theirs` y `git checkout --ours` sirven cuando conocemos los cambios de nuestros compañeros y no necesitamos utilizar un mergetool para solucionarlos.
+	- `git merge --no-commit --no-ff feature-branch` sirve para simular un merge y revisar los cambios facilmente con `git diff --cached`, en caso de que decidamos que no haremos el merge usamos `git merge --abort`.
+	- `git mergetool` nos permite usar una herramienta específica para manejar los conflictos de merge.
+	- `git revert` permite deshacer cambios realizados en un commit, creando un nuevo commit que niega al commit señalado.
+	- `git tag` sirve para marcar hitos en nuestro código.
+	- `git bisect` sirve para encontrar donde ocurrió un error concreto.
+
+## Preguntas
