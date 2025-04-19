@@ -376,3 +376,42 @@ Los rebases frecuentes pueden ayudar a que aparezcan tantos conflictos, además 
 
 	```
 
+## Ejercicios adicionales
+
+### Ejercicio 1: Resolución de conflictos en un entorno ágil
+
+**Contexto:**
+
+Estás trabajando en un proyecto ágil donde múltiples desarrolladores están enviando cambios a la rama principal cada día. Durante una integración continua, se detectan conflictos de fusión entre las ramas de dos equipos que están trabajando en dos funcionalidades críticas. Ambos equipos han modificado el mismo archivo de configuración del proyecto.
+
+**Pregunta:**
+
+¿Cómo gestionarías la resolución de este conflicto de manera eficiente utilizando Git y manteniendo la entrega continua sin interrupciones? ¿Qué pasos seguirías para minimizar el impacto en la CI/CD y asegurar que el código final sea estable?
+
+Para solucionar este conflico y que se mantenga la entrega continua, entonces se debieron de establecer que merge rotos no entren a main y se queden en sus ramas ( o sea que se queden como PR pendientes en todo caso), y cuando se detecte como fallido el PR ahí se empieza a buscar la solución:
+- Crear una rama `merge/integration-fix` desde `main` y luego hacer merge de las ramas `feature-A` y `feature-B`.
+- Hablar con ambos equipos para saber que hacer con los cambios, ejecutar las respectivas pruebas unitarias y de integración en local.
+- Hacer `git push origin merge/integration-fix`
+- Luego un merge fast forward,
+	```bash
+	git switch main
+	git pull origin main # Por si hubieron nuevos commits en main mientras arreglabamos el error
+	git merge --ff-only merge/integration-fix
+	git push origin main
+	```
+
+### **Ejercicio 2: Rebase vs. Merge en integraciones ágiles**
+
+**Contexto:**  
+En tu equipo de desarrollo ágil, cada sprint incluye la integración de varias ramas de características. Algunos miembros del equipo prefieren realizar merge para mantener el historial completo de commits, mientras que otros prefieren rebase para mantener un historial lineal.
+
+**Pregunta:**
+
+¿Qué ventajas y desventajas presenta cada enfoque (merge vs. rebase) en el contexto de la metodología ágil? ¿Cómo impacta esto en la revisión de código, CI/CD, y en la identificación rápida de errores?
+| Aspecto          | Merge          | Rebase             |
+|----------------|-----------------------------|------------------------------|
+| Revisión de código       | Más contexto, pero más ruido        | Cambios más claros, diffs limpios                     |
+| CI/CD                    | Potencial de conflictos tardíos                    | Prevención proactiva de errores                       |
+| Trazabilidad             | Excelente (quién, cuándo, cómo)                    | Menos granular (más “resumido”)                       |
+| Identificación de bugs   | Más fácil con merge commits (bisect)              | `git bisect` más efectivo en historia lineal          |
+| Colaboración             | Seguro en ramas compartidas                        | Requiere cuidado y coordinación                       |
