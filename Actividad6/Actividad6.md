@@ -410,8 +410,8 @@ En tu equipo de desarrollo ágil, cada sprint incluye la integración de varias 
 ¿Qué ventajas y desventajas presenta cada enfoque (merge vs. rebase) en el contexto de la metodología ágil? ¿Cómo impacta esto en la revisión de código, CI/CD, y en la identificación rápida de errores?
 | Aspecto          | Merge          | Rebase             |
 |----------------|-----------------------------|------------------------------|
-| Revisión de código       | Más contexto, pero más ruido        | Cambios más claros, diffs limpios                     |
-| CI/CD                    | Potencial de conflictos tardíos                    | Prevención proactiva de errores                       |
-| Trazabilidad             | Excelente (quién, cuándo, cómo)                    | Menos granular (más “resumido”)                       |
-| Identificación de bugs   | Más fácil con merge commits (bisect)              | `git bisect` más efectivo en historia lineal          |
+| Revisión de código       | Más información pero menos claridad        | Cambios más notorios, los diffs se entienden mejor                    |
+| CI/CD                    | Mayor probabilidad de conflictos                    |  Se evitan de errores                       |
+| Trazabilidad             | Se lleva el registro completo                    | Muy resumido, se omiten detalles                       |
+| Identificación de bugs   | Complicado si hay muchas ramas     | `git bisect` más efectivo en historia lineal          |
 | Colaboración             | Seguro en ramas compartidas                        | Requiere cuidado y coordinación                       |
