@@ -415,3 +415,128 @@ En tu equipo de desarrollo ágil, cada sprint incluye la integración de varias 
 | Trazabilidad             | Se lleva el registro completo                    | Muy resumido, se omiten detalles                       |
 | Identificación de bugs   | Complicado si hay muchas ramas     | `git bisect` más efectivo en historia lineal          |
 | Colaboración             | Seguro en ramas compartidas                        | Requiere cuidado y coordinación                       |
+
+### **Ejercicio 3: Git hooks en un flujo de trabajo CI/CD ágil**
+
+**Contexto:**  
+Tu equipo está utilizando Git y una pipeline de CI/CD que incluye tests unitarios, integración continua y despliegues automatizados. Sin embargo, algunos desarrolladores accidentalmente comiten código que no pasa los tests locales o no sigue las convenciones de estilo definidas por el equipo.
+
+**Pregunta:**
+
+Diseña un conjunto de Git Hooks que ayudaría a mitigar estos problemas, integrando validaciones de estilo y tests automáticos antes de permitir los commits. Explica qué tipo de validaciones implementarías y cómo se relaciona esto con la calidad del código y la entrega continua en un entorno ágil.
+
+pre-commit (Verifica el estilo inconsistente)
+
+```bash
+#!/bin/bash
+echo "Ejecutando pre-commit hook..."
+
+# Validar formato con black formatter
+echo "Ejecutando black..."
+black . || exit 1
+
+# Lint con flake8
+echo "Ejecutando flake8..."
+flake8 . || exit 1
+
+# Revisamos la sintaxis
+echo "Verificando sintaxis..."
+python -m compileall . || exit 1
+
+echo "Pre-commit completado con éxito"
+
+```
+
+commit-msg (Verifica que los mensajes sean claros y descriptivos)
+
+```bash
+#!/bin/bash
+commit_msg_file=$1
+commit_msg=$(cat "$commit_msg_file")
+
+# En caso de que se quiera unas conventional commits https://www.conventionalcommits.org/en/v1.0.0/
+pattern="^(feat|fix|chore|docs|style|refactor|test)(\([^)]+\))?: .+"
+
+if [[ ! "$commit_msg" =~ $pattern ]]; then
+  echo "Mensaje de commit inválido."
+  exit 1
+fi
+
+echo "Mensaje de commit válido."
+
+```
+
+pre-push (Evita que el código rompa los tests)
+
+```bash
+#!/bin/bash
+echo "Ejecutando pre-push hook..."
+
+# Correr los tests
+echo "Corriendo pytest..."
+pytest || {
+  echo "Los tests fallaron. Se cancela el push"
+  exit 1
+}
+
+echo "Todos los tests pasaron. Push permitido"
+
+```
+
+### **Ejercicio 4: Estrategias de branching en metodologías ágiles**
+
+**Contexto:**  
+Tu equipo de desarrollo sigue una metodología ágil y está utilizando Git Flow para gestionar el ciclo de vida de las ramas. Sin embargo, a medida que el equipo ha crecido, la gestión de las ramas se ha vuelto más compleja, lo que ha provocado retrasos en la integración y conflictos de fusión frecuentes.
+
+**Pregunta:**
+
+Explica cómo adaptarías o modificarías la estrategia de branching para optimizar el flujo de trabajo del equipo en un entorno ágil y con integración continua. Considera cómo podrías integrar feature branches, release branches y hotfix branches de manera que apoyen la entrega continua y minimicen conflictos.
+
+| Rama           | Uso                                           | Vida útil              |
+|----------------|-----------------------------------------------|-------------------------|
+| `main`         | Producción            | Permanente              |
+| `feature/*`    | Desarrollo de las funcionalidades                 | Corto (días)            |
+| `release/*`    | Para cuando sea necesario preparar una versión      | Temporal (días-semanas)      |
+| `hotfix/*`     | Correcciones urgentes                         | Corto (horas-días)  |
+
+### **Ejercicio 5: Automatización de reversiones con git en CI/CD**
+
+**Contexto:**  
+Durante una integración continua en tu pipeline de CI/CD, se detecta un bug crítico después de haber fusionado varios commits a la rama principal. El equipo necesita revertir los cambios rápidamente para mantener la estabilidad del sistema.
+
+**Pregunta:**
+
+¿Cómo diseñarías un proceso automatizado con Git y CI/CD que permita revertir cambios de manera eficiente y segura? Describe cómo podrías integrar comandos como `git revert` o `git reset` en la pipeline y cuáles serían los pasos para garantizar que los bugs se reviertan sin afectar el desarrollo en curso.
+
+```bash
+name: Revertir Commit con PR
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_hash:
+        description: 'Hash del commit a revertir'
+        required: true
+
+jobs:
+  revertir:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Revertir commit
+        run: |
+          git config --global user.name "Bot Actions"
+          git config --global user.email "actions@github.com"
+          git checkout -b revert-${{ inputs.commit_hash }}
+          git revert --no-edit ${{ inputs.commit_hash }}
+          git push origin revert-${{ inputs.commit_hash }}
+      
+      - name: Crear Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          title: "Revertir commit ${{ inputs.commit_hash }}"
+          branch: "revert-${{ inputs.commit_hash }}"
+```
+
+Primero se crea la rama, luego realiza el `git revert --no-edit` para que se haga el revert al último commit y no pida confirmación, finalmente se sube la rama y se espera a un PR. Se utiliza el action de Peter Evans para crear el pull request https://github.com/peter-evans/create-pull-request
