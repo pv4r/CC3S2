@@ -97,6 +97,25 @@
 
 ### 4. Implementa una opción en el script que realice un merge automatizado de una rama determinada en la rama actual, incluyendo la resolución automática de conflictos (siempre que sea posible).
 
+#### Integracion de la funcion
 
+![](Attachments/Pasted%20image%2020250423032406.png)
 
+![](Attachments/Pasted%20image%2020250423032426.png)
+#### Salida
 
+![](Attachments/Pasted%20image%2020250423032112.png)
+
+### 5. Implementa una opción en el script que genere un reporte con información relevante del repositorio (estado, ramas, últimos commits, stashes, etc.) y lo guarde en un archivo.
+
+#### Integración de la función
+
+![](Attachments/Pasted%20image%2020250423033602.png)
+
+#### Salida
+
+![](Attachments/Pasted%20image%2020250423033404.png)
+
+![](Attachments/Pasted%20image%2020250423033433.png)
+
+![](Attachments/Pasted%20image%2020250423033510.png)
