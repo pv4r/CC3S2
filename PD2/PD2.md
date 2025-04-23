@@ -1,5 +1,7 @@
 # Actividad: Exploración y administración avanzada de Git mediante un script interactivo
 
+El repositorio de prueba que se utilizó para esta actividad es este [Repositorio PD2](https://github.com/pv4r/PD2-CC3S2).
+
 ## 1. Inicio del script
 
 ![](Attachments/Pasted%20image%2020250422232031.png)
