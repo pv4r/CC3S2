@@ -73,3 +73,30 @@
 
 ### 2. Amplia la sección de "Gestión de git diff" para permitir ver las diferencias de un archivo específico entre dos commits o ramas.
 
+![](Attachments/Pasted%20image%2020250423020425.png)
+
+![](Attachments/Pasted%20image%2020250423020842.png)
+
+![](Attachments/Pasted%20image%2020250423020901.png)
+
+### 3. Crea una función que permita instalar automáticamente un hook que, por ejemplo, verifique si se han agregado comentarios de documentación en cada commit.
+
+#### Creacion del script
+
+![](Attachments/Pasted%20image%2020250423021514.png)
+
+#### Integración de la función en el submenú de Gestión de Hooks
+
+![](Attachments/Pasted%20image%2020250423025044.png)
+
+#### Salida
+
+![](Attachments/Pasted%20image%2020250423025932.png)
+
+![](Attachments/Pasted%20image%2020250423030049.png)
+
+### 4. Implementa una opción en el script que realice un merge automatizado de una rama determinada en la rama actual, incluyendo la resolución automática de conflictos (siempre que sea posible).
+
+
+
+
