@@ -165,8 +165,197 @@ Le damos permisos de ejecución al archivo antes de ejecutarlo
 
 ## Ejercicios
 
+1. Escribe funciones de Bash `marco` y `polo` que hagan lo siguiente: cada vez que ejecutes `marco`, debe guardarse de alguna manera el directorio de trabajo actual, luego, cuando ejecutes `polo`, sin importar en qué directorio te encuentres, `polo` te debe devolver (con `cd`) al directorio en el que ejecutaste `marco`. Para facilitar la depuración, puedes poner el código en un archivo `marco.sh` y recargarlo con `source marco.sh`.
+
+	**Solución:**
+
+	Se tiene que hacer `source marco.sh` luego de crearlo para cargar la información del script, es diferente a hacer  `./marco.sh` ya que este último comando ejecuta el script, es decir, las funciones y la variable existen hasta que el script acabe.
+
+	`marco.sh`
+
+	```bash
+	#!/bin/bash
+
+	# Guarda el directorio actual
+	marco() {
+	    export MARCO_DIR="$PWD"
+	}
+
+	# Vuelve al directorio guardado
+	polo() {
+	    if [ -n "$MARCO_DIR" ]; then
+	        cd "$MARCO_DIR" || echo "Error: no se pudo acceder a $MARCO_DIR"
+	    else
+	        echo "MARCO_DIR no está definido. Ejecuta 'marco' primero."
+	    fi
+	}
+	```
+
+	Funcionamiento
+
+	![](Attachments/Pasted%20image%2020250509135849.png)
+
+2. Tienes un comando que falla muy raramente. Para depurarlo necesitas capturar su salida, pero puede llevar tiempo que falle. Escribe un script de Bash que ejecute el siguiente fragmento **hasta que falle**, capture sus flujos de salida estándar y de error en archivos, y finalmente imprima todo:
+
+	**Solución:**
+
+	- `>&2` : Redirecciona algo al canal de error (stderr)
+	- `2>`: Redirecciona la salida de error
+
+	`script_falla.sh`
+
+	```bash
+	#!/usr/bin/env bash
+
+	n=$(( RANDOM % 100 ))
+	
+	if [[ n -eq 42 ]]; then
+	   echo "Algo esta pasando!"
+	   >&2 echo "El error fue por usar numero magicos"
+	   exit 1
+	fi
+
+	echo "Todo salio de acuerdo al plan"
+
+	```
+
+	`capture.sh`
+
+	```bash
+	#!/usr/bin/env bash
+
+	# Archivos temporales para guardar la salida
+	out_file="logs.txt"
+	err_file="error_logs.txt"
+	
+	# Bucle infinito hasta que el comando falle
+	while true; do
+	    # Ejecuta el comando y redirige stdout y stderr a archivos
+	    ./script_falla.sh >"$out_file" 2>"$err_file"
+
+	    # Verifica si falló
+	    if [ $? -ne 0 ]; then
+	        echo "¡El comando falló!"
+	        echo "=== Salida estándar ==="
+	        cat "$out_file"
+	        echo "=== Salida de error ==="
+	        cat "$err_file"
+	        break
+	    fi
+	done
+	```
+
+	- `$?`: La variable `?` contiene el código de salida del último comando ejecutado, si sale 0 significa que no hubo error y si es distinto de 0 es porque ocurrió un fallo.
+
+	Funcionamiento:
+
+	![](Attachments/Pasted%20image%2020250509143801.png)
+
+3. El `-exec` de `find` puede ser muy poderoso para realizar operaciones sobre los archivos que encuentra. Sin embargo, ¿qué pasa si queremos hacer algo con **todos** los archivos, como crear un archivo ZIP? Algunos comandos leen de **STDIN**, pero otros (como `tar`) necesitan recibir la lista de archivos como argumentos. Para unir ambos mundos tenemos `xargs`, que ejecuta un comando tomando su **STDIN** como lista de argumentos. Por ejemplo:
+
+	```bash
+	ls | xargs rm
+	```
+
+	Eliminará los archivos que `ls` lista.
+
+	**Solución:**
+
+	```bash
+	find /path/ -type f -name "*.html" -print0 | xargs -0 zip archivos_html.zip
+	```
+
+	Donde:
+
+	- `find /path/ -type f -name "*.html"`: Busca recursivamente todos los archivos con extensión `html` dentro de la carpeta.
+	- `-print0`: Imprime los resultados separados por **null (`\0`)**, para evitar problemas con nombres que contienen espacios o saltos de línea.
+	- `xargs -0`: Lee la entrada null-separated del `find` y la pasa como **argumentos individuales seguros** al siguiente comando.
+	- `zip archivos_html.zip`: Crea un archivo llamado `archivos_html.zip`y mete dentro todos los archivos `html` que encontró
+
+	`comprimir_html.sh`
+
+	```bash
+	#!/usr/bin/env bash
+
+	# Verifica si se ingreso una ruta
+	if [ -z "$1" ]; then
+	    echo "Uso: $0 <ruta-de-la-carpeta>"
+	    exit 1
+	fi
+
+	# Guarda la ruta proporcionada como variable
+	CARPETA="$1"
+
+	# Verifica si la ruta es válida
+	if [ ! -d "$CARPETA" ]; then
+	    echo "Error: '$CARPETA' no es un directorio válido"
+	    exit 1
+	fi
+
+	# Ejecuta el comando de compresión
+	find "$CARPETA" -type f -name "*.html" -print0 | xargs -0 zip archivos_html.zip
+
+	echo "Archivo ZIP creado exitosamente: archivos_html.zip"
+	```
+
+	Funcionamiento:
+
+	![](Attachments/Pasted%20image%2020250509151815.png)
+
+4. Escribe un comando o script que, de forma recursiva, encuentre el archivo **más recientemente modificado** en un directorio. Y, más en general, ¿puedes listar todos los archivos por orden de recencia?
+
+	**Solución:**
+
+	Encontrar el archivo más reciente modificado
+
+	```bash
+	find /path/ -type f -printf "%T@ %p\n" | sort -n | tail -1 | cut -d' ' -f2-
+	```
+
+	Listar todos los archivos por tiempo de modificación
+
+	```bash
+	find /path/ -type f -printf "%T@ %p\n" | sort -nr | cut -d' ' -f2-
+	```
+
+	`archivos_recientes.sh`
+
+	```bash
+	#!/usr/bin/env bash
+
+	# Verifica que se haya dado al menos un argumento (la ruta)
+	if [ -z "$1" ]; then
+	    echo "Uso: $0 <ruta> [--solo-uno]"
+	    exit 1
+	fi
+
+	# Guarda la ruta del directorio
+	CARPETA="$1"
+
+	# Verifica que sea un directorio válido
+	if [ ! -d "$CARPETA" ]; then
+	    echo "Error: '$CARPETA' no es un directorio válido"
+	    exit 1
+	fi
+
+	# Opción --solo-uno: mostrar solo el archivo más reciente
+	if [ "$2" == "--solo-uno" ]; then
+	    find "$CARPETA" -type f -printf "%T@ %p\n" | sort -n | tail -1 | cut -d' ' -f2-
+	else
+	    # Mostrar todos los archivos ordenados por fecha (más recientes primero)
+	    find "$CARPETA" -type f -printf "%T@ %p\n" | sort -nr | cut -d' ' -f2-
+	fi
+	```
 
 
+	Funcionamiento:
+
+	![](Attachments/Pasted%20image%2020250509153807.png)
+
+### Paso 12 - Expresiones regulares en bash
+
+
+	
 
 
 
